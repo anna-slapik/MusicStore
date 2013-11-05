@@ -1,0 +1,4 @@
+MusicStore/bin/*
+MusicStore/obj/*
+*.suo
+*.user
