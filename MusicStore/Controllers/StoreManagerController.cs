@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MusicStore.Models;
 
 namespace MusicStore.Controllers
-{ 
+{
+
+    [Authorize(Roles = "Administrator")]
     public class StoreManagerController : Controller
     {
         private MusicStoreEntities db = new MusicStoreEntities();
@@ -39,7 +38,7 @@ namespace MusicStore.Controllers
             ViewBag.GenreId = new SelectList(db.Genres, "GenreId", "Name");
             ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name");
             return View();
-        } 
+        }
 
         //
         // POST: /StoreManager/Create
@@ -51,17 +50,17 @@ namespace MusicStore.Controllers
             {
                 db.Albums.Add(album);
                 db.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
 
             ViewBag.GenreId = new SelectList(db.Genres, "GenreId", "Name", album.GenreId);
             ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name", album.ArtistId);
             return View(album);
         }
-        
+
         //
         // GET: /StoreManager/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
             Album album = db.Albums.Find(id);
@@ -89,7 +88,7 @@ namespace MusicStore.Controllers
 
         //
         // GET: /StoreManager/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
             Album album = db.Albums.Find(id);
@@ -101,7 +100,7 @@ namespace MusicStore.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
+        {
             Album album = db.Albums.Find(id);
             db.Albums.Remove(album);
             db.SaveChanges();
